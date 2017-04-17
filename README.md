@@ -3,12 +3,17 @@ Deploying Hadoop Cluster Approaches
 
 **Table of Contents**
 
-[TOC]
-
+##### Table of Contents  
++ Introduction
++ Approaches
+  + BigTop cluster
+  + Hadoop Cluster based on vagrant and shell scripts provisioning
+  + Cloudera Cluster based on vagrant and Ansible provisioning
++ References
 
 ------------
 
-#Introduction
+# Introduction
 When we work with setting-up some sort of cluster, we have to repeat the same commands to setup the host OS or to initialize deployment environment, what make some sysadmins prepare a set of scripts that hold most of the work as a semi-automated way to speed-up the process.
 But when we work with master/slave clusters like Hadoop it become a pain to manage all configurations and redo the process to hundred (or even thousands) of nodes, which opened the door to companies to invest in this field and provide a management tool that lead the cluster installation and configuration process.
 But since the hadoop core tools are open-source, people keep looking for an whole open-source solution that give them less pain and keep open for development, and achieving that using some sort of provisioning tool.
