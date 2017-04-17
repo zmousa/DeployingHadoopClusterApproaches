@@ -44,7 +44,9 @@ Under above criteria we will check different solutions for deploying Hadoop clus
 ## BigTop cluster
 BigTop is an open source project contains a deployment part of Apache Hadoop ecosystem, where it provides a distribution repository that contains a compatible versions for a majority of open source components including (hadoop, hbase, hive, flume, hue, kafka, mahout, oozie, solr, spark, sqoop, sqoop2, zookeeper …)
 In addition to puppet provisioning modules that provide an automated way for deployment.
+
 **Source**: https://github.com/apache/bigtop
+
 **Steps**:
 + Setup virtual machine cluster nodes using Vagrant, by setting VM settings, installing the proper OS and configure the private network.
   + As BitgTop predefined vagrant file depends on a property file vagrantconfig.yaml to set the main attributes:
@@ -97,7 +99,7 @@ kafka:: server::port "9092"
 kafka:: server::zookeeper_connection_string "%{hiera('bigtop::hadoop_head_node')}:2181"
 ```
   + Installing java will take a place inside the puppet files in bigtop-toolchain component.
-  ```json
+  ```bash
 package { 'openjdk-7-jdk' :
      ensure => present,
   }
@@ -110,7 +112,7 @@ package { 'openjdk-7-jdk' :
 + Adding additional modules to BigTop project to facilitate the full big data project usage:
   + Adding MySQL and SQL JDBC connector puppet modules to be used in the projects that use RDBMS database and migration processes.
     + Changing the mysql server configurations from site.pp file as below:
- ```json
+ ```bash
  class { ':: mysql::server':
        root_password    => 'strongpassword',
        override_options => { 
@@ -119,7 +121,7 @@ package { 'openjdk-7-jdk' :
   }
 ```
     + With Ability to create default database, by adding such configurations:
- ```json
+ ```bash
  mysql::db { 'mydb':
     user     => 'myuser',
     password => 'mypass',
@@ -129,7 +131,7 @@ package { 'openjdk-7-jdk' :
 ```
   + Installing Ganglia module, which is a distributed monitoring system to view live statistics covering metrics such as CPU load averages or network utilization for cluster nodes, below configuration should be changed at site.pp in order to be provisioned to the monitoring daemon (updated manually at “/etc/ganglia/gmond.conf”).
     + Change gmetad (Ganglia meta daemon) configuration to setup the cluster name
-  ```json
+  ```bash
 class { 'ganglia::gmetad':
          clusters      => $clusters,
      gridname      => 'my grid',
@@ -139,7 +141,7 @@ class { 'ganglia::gmetad':
    }
 ```
     + Change gmond (Ganglia monitoring daemon) configuration to setup the configuration of sending and receiving metrics.
-  ```json
+  ```bash
 $udp_recv_channel = [ 
          { host => '192.168.1.10', port => 8649 }
   ]
@@ -150,7 +152,7 @@ $udp_recv_channel = [
    }
 ```
     + Setting up Ganglia web module
-  ```json
+  ```bash
  class{ 'ganglia::web':
     ganglia_ip => '192.168.0.10',
     ganglia_port => 8652,
@@ -185,7 +187,9 @@ $udp_recv_channel = [
 
 ## Hadoop Cluster based on vagrant and shell scripts provisioning
 Most sysadmins usually use scripts that hold all commands and configuration for the deployment processes, so this solution provide an automated way to provision virtual machine cluster nodes using these scripts.
+
 **Source**: https://github.com/dnafrance/vagrant-hadoop-spark-cluster
+
 **Steps**:
 + Setup virtual machine cluster nodes using Vagrant, by setting VM settings, installing the proper OS and configure the private network.
   + Configuring Vagrantfile by setting the VM box url and memory information for each node:
@@ -280,7 +284,9 @@ $SPARK_HOME/bin/spark-submit --class org.apache.spark.examples.SparkPi --master 
 ## Cloudera Cluster based on vagrant and Ansible provisioning
 Cloudera Manager is a great tool to orchestrate CDH-based Apache Hadoop cluster, which used  for cluster installation, deploying configurations, restarting daemons to monitoring each cluster component.
 Cloudera proposed an official project to automate the manual part of installing and configuring cloudera manager, thereby being able to replay steps for upcoming cluster installations.
+
 **Source**: https://github.com/cloudera/cloudera-playbook
+
 The automation tall used here is Ansible, and below are the steps to start this cluster:
 + Updating the hosts file that will assign nodes into the cluster roles.
 ```bash
